@@ -1,0 +1,9 @@
+packages:
+    - name: api
+      functions:
+        - name: soap
+          runtime: python:default
+          web: true
+        - name: reservasi
+          runtime: python:default
+          web: true
