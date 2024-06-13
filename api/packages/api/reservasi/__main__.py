@@ -13,6 +13,17 @@ def calculate_reminder_time(hari_reservasi):
     
     return timestamp
 
+def sender(nomor, text):
+    nomor = int(nomor)
+    api_key = os.getenv("TEXTMEBOT_API_KEY")
+    url = f"http://api.textmebot.com/send.php?recipient=+62{nomor}&apikey={api_key}&text={text}"
+    print(url)
+    try:
+        requests.get(url)
+        return "Success"
+    except Exception as e:
+        return e
+
 def main(args):
     nama = args.get('nama')
     phone_number = args.get('noHP')
@@ -64,7 +75,7 @@ def main(args):
         "noHP": phone_number,
         "id_layanan": id_layanan,
         "remind_timestamp": calculate_reminder_time(hari_reservasi),
-        "status": "reservasi",
+        "status": "reminder reservasi",
     }
 
     session = client.start_session()
