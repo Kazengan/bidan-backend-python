@@ -10,3 +10,6 @@ packages:
         - name: reservasi
           runtime: python:default
           web: true
+        - name: clear
+          runtime: python:default
+          web: true
