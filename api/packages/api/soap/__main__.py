@@ -1,6 +1,7 @@
 import pymongo
+import os
+from dotenv import load_dotenv
 
-client = pymongo.MongoClient("mongodb+srv://adminbidan:adminbidan@cluster0.kuxrorf.mongodb.net/?retryWrites=true&w=majority")
 
 def main(args):
     data = args.get('data')
@@ -28,6 +29,13 @@ def main(args):
         collection = db.soap_imunisasi
     else:
         return {"body": {"messages": "under construction"}, "statusCode": 401}
+
+    try:
+        load_dotenv()
+        client = pymongo.MongoClient(os.getenv("MONGODB_URI"))
+    except Exception as e:
+        print(f"Error: {e}")
+        return {"body": {"messages": str(e)}, "statusCode": 401}
 
     try:
         result = collection.insert_one(data)
