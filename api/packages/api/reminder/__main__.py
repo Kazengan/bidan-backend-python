@@ -19,7 +19,7 @@ def main(args):
     hari_reservasi = args.get('tglKirim')[:10]
 
     if not id_pasien:
-        return {"body": {"message": "ifPasien needed"}, "statusCode": 401}
+        return {"body": {"message": "idPasien needed"}, "statusCode": 401}
 
     try:
         id_pasien = int(id_pasien)
@@ -51,23 +51,18 @@ def main(args):
     if type(timestamp) != int:
         return {"body": {"message": f"error {timestamp}"}, "statusCode": 401}
 
-    nama = pasien["nama_pasien"]
+    nama = pasien.get("nama_pasien", "Unknown")
 
-    if pasien["data_kb"]:
-        try:
-            phone_number = pasien["no_hp"]    
-        except:
-            return {"body": {"message": "phone_number data not found"}, "statusCode": 401}
-    elif pasien["data_imunisasi"]:
-        try:
-            phone_number = pasien["no_hp"]    
-        except:
-            return {"body": {"message": "phone_number data not found"}, "statusCode": 401}
-    elif pasien["data_kehamilan"]:
-        try:
-            phone_number = pasien["data_kehamilan"]["section2"]["noTelp"]
-        except:
-            return {"body": {"message": "phone_number data not found"}, "statusCode": 401}
+    phone_number = None
+    if pasien.get("data_kb"):
+        phone_number = pasien.get("no_hp", None)
+    elif pasien.get("data_imunisasi"):
+        phone_number = pasien.get("no_hp", None)
+    elif pasien.get("data_kehamilan"):
+        phone_number = pasien.get("data_kehamilan", {}).get("section2", {}).get("noTelp", None)
+
+    if not phone_number:
+        return {"body": {"message": "phone_number data not found"}, "statusCode": 401}
     
     json_data = {
         "nama": nama,

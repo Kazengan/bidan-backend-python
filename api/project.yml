@@ -4,6 +4,9 @@ packages:
         MONGODB_URI: "${MONGODB_URI}"
         TEXTMEBOT_API_KEY: "${TEXTMEBOT_API_KEY}"
       functions:
+        - name: export
+          runtime: python:default
+          web: true
         - name: soap
           runtime: python:default
           web: true

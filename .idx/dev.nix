@@ -2,15 +2,17 @@
 # see: https://developers.google.com/idx/guides/customize-idx-env
 { pkgs, ... }: {
   # Which nixpkgs channel to use.
-  channel = "stable-23.11"; # or "unstable"
+  channel = "unstable"; # or "unstable"
 
   # Use https://search.nixos.org/packages to find packages
   packages = [
     # pkgs.go
     pkgs.python311
     pkgs.python311Packages.pip
-    # pkgs.nodejs_20
-    # pkgs.nodePackages.nodemon
+    pkgs.python311Packages.virtualenv
+    pkgs.go
+    pkgs.doctl
+    pkgs.virtualenv
   ];
 
   # Sets environment variables in the workspace
@@ -18,7 +20,11 @@
   idx = {
     # Search for the extensions you want on https://open-vsx.org/ and use "publisher.id"
     extensions = [
-      # "vscodevim.vim"
+      "ms-python.python"
+      "ms-azuretools.vscode-azurefunctions"
+      "ms-azuretools.vscode-azureresourcegroups"
+      "ms-python.debugpy"
+      "golang.go"
     ];
 
     # Enable previews
@@ -42,8 +48,7 @@
     workspace = {
       # Runs when a workspace is first created
       onCreate = {
-        # Example: install JS dependencies from NPM
-        # npm-install = "npm install";
+        # "pip i"
       };
       # Runs when the workspace is (re)started
       onStart = {
