@@ -13,7 +13,14 @@ def main(args):
     if not data:
         return {"body": {"messages": "data not provided"}, "statusCode": 401}
     
-    db = client.mydb
+    load_dotenv()
+    try:
+        client = pymongo.MongoClient(os.getenv("MONGODB_URI"))
+        db = client.mydb
+    except Exception as e:
+        print(f"Error: {e}")
+        return {"body": {"messages": str(e)}, "statusCode": 401}
+    
     try:
         id_layanan = int(id_layanan)
     except:
@@ -29,13 +36,6 @@ def main(args):
         collection = db.soap_imunisasi
     else:
         return {"body": {"messages": "under construction"}, "statusCode": 401}
-
-    try:
-        load_dotenv()
-        client = pymongo.MongoClient(os.getenv("MONGODB_URI"))
-    except Exception as e:
-        print(f"Error: {e}")
-        return {"body": {"messages": str(e)}, "statusCode": 401}
 
     try:
         result = collection.insert_one(data)
